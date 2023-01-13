@@ -9,6 +9,10 @@
     "test:unit": "vitest --environment jsdom --root src/"
   },
   "dependencies": {
+    "airtable": "^0.11.6",
+    "axios": "^1.2.2",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
     "pinia": "^2.0.28",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
