@@ -41,7 +41,8 @@ export default {
             },
           }
         );
-        console.log(data);
+        alert(data.message);
+        this.$router.push("/");
       } catch (error) {
         console.error(error);
       }

@@ -1,17 +1,7 @@
 import bcrypt from "bcrypt";
 
 import { createJwt } from "../../src/helpers/jwt";
-// import { base } from "../../src/helpers/db";
-import Airtable from "airtable";
-
-const { AIRTABLE_API_KEY, AIRTABLE_BASE_KEY } = process.env;
-
-Airtable.configure({
-  endpointUrl: "https://api.airtable.com",
-  apiKey: AIRTABLE_API_KEY,
-});
-
-const base = Airtable.base(AIRTABLE_BASE_KEY);
+import { base } from "../../src/helpers/db";
 
 const getUser = async (username) => {
   return new Promise((resolve, reject) => {
@@ -25,7 +15,9 @@ const getUser = async (username) => {
         }
 
         if (records.length === 0) {
-          return reject(new Error(`No user with username: ${username}`));
+          const error = new Error(`No user with username: ${username}`);
+          error.code = 404;
+          return reject(error);
         }
 
         const user = records.find(
@@ -64,6 +56,9 @@ exports.handler = async (event) => {
       }),
     };
   } catch (error) {
+    if (error.code) {
+      errorStatusCode = error.code;
+    }
     return {
       statusCode: errorStatusCode,
       body: JSON.stringify({ status: errorStatusCode, message: error.message }),
